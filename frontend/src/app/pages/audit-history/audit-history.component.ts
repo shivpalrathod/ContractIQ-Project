@@ -254,3 +254,4 @@ export class AuditHistoryComponent implements OnInit {
     return error?.error?.detail || fallback;
   }
 }
+

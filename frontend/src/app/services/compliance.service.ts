@@ -57,7 +57,7 @@ export class ComplianceService {
   private readonly http = inject(HttpClient);
 
   private readonly apiUrl =
-    'http://127.0.0.1:8000/compliance';
+    'https://contractiq-backend-byug.onrender.com/compliance';
 
   /**
    * Get all compliance records available
@@ -137,3 +137,4 @@ export class ComplianceService {
     );
   }
 }
+

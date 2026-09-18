@@ -21,3 +21,4 @@ describe('ComplianceComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

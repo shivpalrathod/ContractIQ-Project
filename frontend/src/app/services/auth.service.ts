@@ -29,7 +29,7 @@ export class AuthService {
 
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://127.0.0.1:8000/auth';
+  private readonly apiUrl = 'https://contractiq-backend-byug.onrender.com/auth';
 
   private readonly tokenKey = 'access_token';
   private readonly roleKey = 'user_role';
@@ -83,3 +83,4 @@ export class AuthService {
       roles.includes(currentRole as UserRole);
   }
 }
+

@@ -27,3 +27,4 @@ export class LayoutComponent {
     this.sidebarOpen = false;
   }
 }
+

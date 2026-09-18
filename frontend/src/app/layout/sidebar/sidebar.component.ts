@@ -144,3 +144,4 @@ export class SidebarComponent {
     return this.authService.getRole() ?? 'User';
   }
 }
+

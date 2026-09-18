@@ -60,7 +60,7 @@ export interface DashboardReport {
 export class ReportService {
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://127.0.0.1:8000/reports';
+  private readonly apiUrl = 'https://contractiq-backend-byug.onrender.com/reports';
 
   getContractSummary(
     contractStatus?: string,
@@ -222,3 +222,4 @@ export class ReportService {
     );
   }
 }
+

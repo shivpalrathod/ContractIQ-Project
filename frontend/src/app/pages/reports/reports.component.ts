@@ -247,3 +247,4 @@ export class ReportsComponent implements OnInit {
     return error?.error?.detail || fallback;
   }
 }
+

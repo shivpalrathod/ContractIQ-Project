@@ -156,3 +156,4 @@ export class DashboardComponent implements OnInit {
     return (item.count / total) * 100;
   }
 }
+

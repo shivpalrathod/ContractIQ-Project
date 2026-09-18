@@ -49,7 +49,7 @@ export class ObligationService {
   private readonly http = inject(HttpClient);
 
   private readonly apiUrl =
-    'http://127.0.0.1:8000/obligations';
+    'https://contractiq-backend-byug.onrender.com/obligations';
 
   /**
    * Get all obligations visible to the logged-in user.
@@ -152,7 +152,8 @@ export class ObligationService {
     contractId: string
   ): Observable<Obligation[]> {
     return this.http.get<Obligation[]>(
-      `http://127.0.0.1:8000/contracts/${contractId}/obligations`
+      `https://contractiq-backend-byug.onrender.com/contracts/${contractId}/obligations`
     );
   }
 }
+

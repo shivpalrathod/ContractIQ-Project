@@ -60,7 +60,7 @@ export class ContractService {
 
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://127.0.0.1:8000/contracts';
+  private readonly apiUrl = 'https://contractiq-backend-byug.onrender.com/contracts';
 
   /**
    * Get all contracts available to the logged-in user.
@@ -178,3 +178,4 @@ export class ContractService {
     );
   }
 }
+

@@ -49,3 +49,4 @@ export class ForgotPasswordComponent {
     this.router.navigate(['/login']);
   }
 }
+

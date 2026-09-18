@@ -46,7 +46,7 @@ export class NotificationService {
   private readonly http = inject(HttpClient);
 
   private readonly apiUrl =
-    'http://127.0.0.1:8000/notifications';
+    'https://contractiq-backend-byug.onrender.com/notifications';
 
   getNotifications(): Observable<Notification[]> {
     return this.http.get<Notification[]>(
@@ -110,3 +110,4 @@ export class NotificationService {
     );
   }
 }
+

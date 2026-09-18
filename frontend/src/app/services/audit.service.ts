@@ -35,7 +35,7 @@ export interface AuditLogFilters {
 export class AuditService {
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://127.0.0.1:8000/audit-logs';
+  private readonly apiUrl = 'https://contractiq-backend-byug.onrender.com/audit-logs';
 
   getAuditLogs(filters: AuditLogFilters = {}): Observable<AuditLogResponse> {
     let params = new HttpParams();
@@ -70,3 +70,4 @@ export class AuditService {
     return this.http.get<AuditLog>(`${this.apiUrl}/${id}`);
   }
 }
+

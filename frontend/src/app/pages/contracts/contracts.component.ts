@@ -546,3 +546,4 @@ export class ContractsComponent implements OnInit {
       .replace(/\s+/g, '-');
   }
 }
+

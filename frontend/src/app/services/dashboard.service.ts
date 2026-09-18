@@ -52,7 +52,7 @@ export class DashboardService {
 
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'http://localhost:8000/reports';
+  private readonly apiUrl = 'https://contractiq-backend-byug.onrender.com/reports';
 
   getDashboard(): Observable<DashboardResponse> {
     return this.http.get<DashboardResponse>(
@@ -60,3 +60,4 @@ export class DashboardService {
     );
   }
 }
+
