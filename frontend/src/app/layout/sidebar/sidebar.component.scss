@@ -1,31 +1,36 @@
 .sidebar {
-  width: 240px;
-  min-width: 240px;
+  width: 250px;
+  min-width: 250px;
   height: 100%;
-  background: #ffffff;
-  border-right: 1px solid #e0e0e0;
-  padding-top: 8px;
+  background: #0f172a;
+  color: #cbd5e1;
+  border-right: 1px solid #1e293b;
+  padding: 12px 8px;
   box-sizing: border-box;
   overflow-x: hidden;
 }
 
-/* User Role */
+/* =========================
+   USER ROLE
+   ========================= */
+
 .role-section {
   display: flex;
   align-items: center;
   gap: 12px;
 
-  padding: 16px;
-  margin-bottom: 8px;
+  padding: 16px 12px;
+  margin-bottom: 12px;
 
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #1e293b;
   box-sizing: border-box;
 
   mat-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 36px;
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
     flex-shrink: 0;
+    color: #60a5fa;
   }
 }
 
@@ -36,68 +41,160 @@
   overflow: hidden;
 
   .role-label {
-    font-size: 11px;
-    color: #777;
+    font-size: 10px;
+    color: #94a3b8;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
   }
 
   strong {
-    margin-top: 2px;
-    font-size: 13px;
+    margin-top: 3px;
+    font-size: 14px;
     font-weight: 600;
+    color: #f8fafc;
+
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 }
 
-/* Navigation */
+/* =========================
+   NAVIGATION
+   ========================= */
+
 mat-nav-list {
   width: 100%;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding: 4px 0;
   box-sizing: border-box;
   overflow-x: hidden;
 }
 
 a {
   display: flex;
-  width: calc(100% - 16px);
-  max-width: calc(100% - 16px);
-  margin: 2px 8px;
+  align-items: center;
+
+  width: calc(100% - 8px);
+  max-width: calc(100% - 8px);
+
+  margin: 4px;
+  padding: 4px 8px;
+
   box-sizing: border-box;
-  border-radius: 8px;
-  overflow: hidden;
+  border-radius: 10px;
+
+  color: #cbd5e1;
+
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+
+  mat-icon {
+    color: #94a3b8;
+    transition: color 0.2s ease;
+  }
 }
+
+/* =========================
+   ANGULAR MATERIAL TEXT FIX
+   ========================= */
+
+:host ::ng-deep .mdc-list-item__primary-text {
+  color: #cbd5e1 !important;
+}
+
+:host ::ng-deep .mat-mdc-list-item-icon {
+  color: #94a3b8 !important;
+}
+
+/* =========================
+   HOVER
+   ========================= */
+
+a:hover {
+  background: #1e293b;
+  color: #ffffff;
+
+  transform: translateX(2px);
+
+  mat-icon {
+    color: #60a5fa;
+  }
+}
+
+:host ::ng-deep a:hover .mdc-list-item__primary-text {
+  color: #ffffff !important;
+}
+
+:host ::ng-deep a:hover .mat-mdc-list-item-icon {
+  color: #60a5fa !important;
+}
+
+/* =========================
+   ACTIVE PAGE
+   ========================= */
 
 a.active {
+  background: #2563eb;
+  color: #ffffff;
+
   font-weight: 600;
+
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+
+  mat-icon {
+    color: #ffffff;
+  }
 }
 
-/* Tablet */
+:host ::ng-deep a.active .mdc-list-item__primary-text {
+  color: #ffffff !important;
+}
+
+:host ::ng-deep a.active .mat-mdc-list-item-icon {
+  color: #ffffff !important;
+}
+
+:host ::ng-deep a.active mat-icon {
+  color: #ffffff !important;
+}
+
+/* =========================
+   TABLET
+   ========================= */
+
 @media (max-width: 768px) {
   .sidebar {
-    width: 190px;
-    min-width: 190px;
+    width: 210px;
+    min-width: 210px;
   }
 
   .role-section {
-    padding: 12px;
+    padding: 14px 10px;
 
     mat-icon {
-      width: 30px;
-      height: 30px;
-      font-size: 30px;
+      width: 34px;
+      height: 34px;
+      font-size: 34px;
     }
+  }
+
+  a {
+    margin: 3px;
   }
 }
 
-/* Small Mobile */
+/* =========================
+   SMALL MOBILE
+   ========================= */
+
 @media (max-width: 500px) {
   .sidebar {
-    width: 170px;
-    min-width: 170px;
+    width: 180px;
+    min-width: 180px;
   }
 
   .role-section {

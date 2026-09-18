@@ -1,100 +1,324 @@
 .login-page {
   min-height: 100vh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 32px;
   box-sizing: border-box;
-  background: #f5f7fa;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(37, 99, 235, 0.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(79, 70, 229, 0.07),
+      transparent 30%
+    ),
+    #f4f7fb;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 1120px;
+  min-height: 650px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 20px 60px rgba(15, 23, 42, 0.10),
+    0 4px 15px rgba(15, 23, 42, 0.05);
+}
+
+
+/* =========================================================
+   BRAND SECTION
+   ========================================================= */
+
+.brand-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 64px;
+  box-sizing: border-box;
+  background:
+    linear-gradient(
+      145deg,
+      #0f172a 0%,
+      #111c35 55%,
+      #172554 100%
+    );
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.brand-section::before {
+  content: "";
+  position: absolute;
+  width: 330px;
+  height: 330px;
+  border-radius: 50%;
+  top: -150px;
+  right: -120px;
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.brand-section::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  bottom: -150px;
+  left: -120px;
+  background: rgba(99, 102, 241, 0.10);
+}
+
+.brand-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 500px;
+}
+
+.brand-logo {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: rgba(59, 130, 246, 0.18);
+  border: 1px solid rgba(147, 197, 253, 0.25);
+}
+
+.brand-logo mat-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 34px;
+  color: #60a5fa;
+}
+
+.brand-name {
+  margin-bottom: 20px;
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.brand-name span {
+  color: #60a5fa;
+}
+
+.brand-content h2 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.brand-description {
+  max-width: 460px;
+  margin: 18px 0 34px;
+  color: #cbd5e1;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   FEATURES
+   ========================================================= */
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(147, 197, 253, 0.12);
+}
+
+.feature-icon mat-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  color: #60a5fa;
+}
+
+.feature-item strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.feature-item span {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   LOGIN SECTION
+   ========================================================= */
+
+.login-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  box-sizing: border-box;
+  background: #ffffff;
 }
 
 .login-card {
   width: 100%;
-  max-width: 440px;
-  padding: 36px;
+  max-width: 410px;
+  padding: 12px;
   box-sizing: border-box;
+  background: transparent;
+  box-shadow: none;
 }
+
+
+/* =========================================================
+   LOGIN HEADER
+   ========================================================= */
 
 .login-header {
   text-align: center;
-  margin-bottom: 30px;
-
-  .logo {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 18px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #e8eefc;
-
-    mat-icon {
-      width: 34px;
-      height: 34px;
-      font-size: 34px;
-    }
-  }
-
-  h1 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 600;
-  }
-
-  p {
-    margin: 8px 0 0;
-    color: #666;
-    font-size: 14px;
-  }
+  margin-bottom: 32px;
 }
+
+.mobile-logo {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: #e8f0ff;
+}
+
+.mobile-logo mat-icon {
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  color: #2563eb;
+}
+
+.login-header h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+}
+
+.login-header p {
+  margin: 9px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
 
 .full-width {
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .forgot-password-link {
   width: 100%;
-  text-align: right;
-  margin: 2px 0 18px;
-
-  a {
-    color: #3f51b5;
-    font-size: 14px;
-    font-weight: 500;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
+  display: flex;
+  justify-content: flex-end;
+  margin: 2px 0 20px;
 }
+
+.forgot-password-link a {
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.forgot-password-link a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
 
 .error-message {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  margin: 8px 0 16px;
-  border-radius: 6px;
-  background: #ffebee;
-  color: #b71c1c;
-  font-size: 14px;
-
-  mat-icon {
-    flex-shrink: 0;
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
+  align-items: flex-start;
+  gap: 9px;
+  width: 100%;
+  padding: 12px 14px;
+  margin: 4px 0 18px;
+  box-sizing: border-box;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+  line-height: 1.45;
 }
+
+.error-message mat-icon {
+  flex-shrink: 0;
+  width: 19px;
+  height: 19px;
+  font-size: 19px;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
 
 .login-button {
   width: 100%;
-  height: 48px;
+  height: 50px;
   margin-top: 4px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
 }
 
 .login-button mat-icon {
@@ -103,28 +327,204 @@
 }
 
 .login-button span {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   vertical-align: middle;
 }
 
-.login-footer {
-  text-align: center;
-  margin-top: 28px;
-  color: #888;
-  font-size: 11px;
-  line-height: 1.5;
+.login-button mat-spinner {
+  display: inline-block;
+  margin-right: 9px;
 }
 
-@media (max-width: 600px) {
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.login-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.login-footer span {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.login-footer small {
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
   .login-page {
-    padding: 16px;
+    padding: 24px;
+  }
+
+  .login-container {
+    grid-template-columns: 1fr 0.95fr;
+    min-height: 600px;
+  }
+
+  .brand-section {
+    padding: 42px;
+  }
+
+  .brand-name {
+    font-size: 32px;
+  }
+
+  .brand-content h2 {
+    font-size: 23px;
+  }
+
+  .brand-description {
+    font-size: 14px;
+  }
+
+  .login-section {
+    padding: 32px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .login-page {
+    min-height: 100vh;
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .login-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .brand-section {
+    min-height: auto;
+    padding: 30px 24px 26px;
+    align-items: flex-start;
+  }
+
+  .brand-logo {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+  }
+
+  .brand-logo mat-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 28px;
+  }
+
+  .brand-name {
+    margin-bottom: 12px;
+    font-size: 28px;
+  }
+
+  .brand-content h2 {
+    font-size: 20px;
+  }
+
+  .brand-description {
+    margin: 12px 0 20px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .feature-list {
+    display: none;
+  }
+
+  .login-section {
+    flex: 1;
+    padding: 28px 20px 32px;
+    align-items: flex-start;
   }
 
   .login-card {
-    padding: 28px 20px;
+    padding: 0;
   }
 
-  .forgot-password-link {
-    margin-bottom: 16px;
+  .login-header {
+    margin-bottom: 26px;
   }
+
+  .mobile-logo {
+    display: none;
+  }
+
+  .login-header h1 {
+    font-size: 25px;
+  }
+
+  .login-header p {
+    font-size: 13px;
+  }
+
+  .full-width {
+    margin-bottom: 8px;
+  }
+
+  .login-button {
+    height: 50px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .brand-section {
+    padding: 24px 20px;
+  }
+
+  .brand-name {
+    font-size: 25px;
+  }
+
+  .brand-content h2 {
+    font-size: 18px;
+  }
+
+  .brand-description {
+    font-size: 12px;
+  }
+
+  .login-section {
+    padding: 24px 16px 28px;
+  }
+
+  .login-header h1 {
+    font-size: 23px;
+  }
+
 }

@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup
+} from '@angular/forms';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -28,6 +33,7 @@ import {
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
@@ -44,6 +50,11 @@ export class ContractsComponent implements OnInit {
 
   private readonly contractService = inject(ContractService);
   private readonly authService = inject(AuthService);
+  private readonly fb = inject(FormBuilder);
+
+  /* =========================================================
+     CONTRACT DATA
+     ========================================================= */
 
   contracts: Contract[] = [];
   filteredContracts: Contract[] = [];
@@ -53,22 +64,29 @@ export class ContractsComponent implements OnInit {
 
   searchTerm = '';
 
+  /* =========================================================
+     CREATE CONTRACT
+     ========================================================= */
+
   showCreateForm = false;
   creating = false;
   createError = '';
 
-  contractForm: ContractCreate = {
-    title: '',
-    contract_number: '',
-    category: '',
-    description: '',
-    counterparty_name: '',
-    start_date: null,
-    end_date: null,
-    contract_value: null,
-    currency: 'INR',
-    assigned_to: null
-  };
+  contractForm: FormGroup = this.fb.group({
+    contract_number: [''],
+    title: [''],
+    category: [''],
+    counterparty_name: [''],
+    start_date: [null],
+    end_date: [null],
+    contract_value: [null],
+    currency: ['INR'],
+    description: ['']
+  });
+
+  /* =========================================================
+     TABLE COLUMNS
+     ========================================================= */
 
   displayedColumns: string[] = [
     'contract_number',
@@ -83,9 +101,17 @@ export class ContractsComponent implements OnInit {
 
   readonly UserRole = UserRole;
 
+  /* =========================================================
+     INITIALIZATION
+     ========================================================= */
+
   ngOnInit(): void {
     this.loadContracts();
   }
+
+  /* =========================================================
+     LOAD CONTRACTS
+     ========================================================= */
 
   loadContracts(): void {
     this.loading = true;
@@ -121,6 +147,10 @@ export class ContractsComponent implements OnInit {
     });
   }
 
+  /* =========================================================
+     SEARCH
+     ========================================================= */
+
   onSearch(): void {
     const search = this.searchTerm.trim().toLowerCase();
 
@@ -149,6 +179,36 @@ export class ContractsComponent implements OnInit {
     this.filteredContracts = [...this.contracts];
   }
 
+  /* =========================================================
+     CONTRACT SUMMARY
+     ========================================================= */
+
+  get totalContracts(): number {
+    return this.contracts.length;
+  }
+
+  get activeContracts(): number {
+    return this.contracts.filter(
+      contract => contract.status === 'Active'
+    ).length;
+  }
+
+  get underReviewContracts(): number {
+    return this.contracts.filter(
+      contract => contract.status === 'Under Review'
+    ).length;
+  }
+
+  get draftContracts(): number {
+    return this.contracts.filter(
+      contract => contract.status === 'Draft'
+    ).length;
+  }
+
+  /* =========================================================
+     ROLE / PERMISSION HELPERS
+     ========================================================= */
+
   hasAnyRole(roles: UserRole[]): boolean {
     return this.authService.hasAnyRole(roles);
   }
@@ -174,6 +234,10 @@ export class ContractsComponent implements OnInit {
     ]);
   }
 
+  /* =========================================================
+     CONTRACT ACTION PERMISSIONS
+     ========================================================= */
+
   canSubmitForReview(contract: Contract): boolean {
     return (
       this.canManageContracts() &&
@@ -195,21 +259,24 @@ export class ContractsComponent implements OnInit {
     );
   }
 
+  /* =========================================================
+     CREATE FORM
+     ========================================================= */
+
   openCreateForm(): void {
     this.createError = '';
 
-    this.contractForm = {
-      title: '',
+    this.contractForm.reset({
       contract_number: '',
+      title: '',
       category: '',
-      description: '',
       counterparty_name: '',
       start_date: null,
       end_date: null,
       contract_value: null,
       currency: 'INR',
-      assigned_to: null
-    };
+      description: ''
+    });
 
     this.showCreateForm = true;
   }
@@ -223,28 +290,43 @@ export class ContractsComponent implements OnInit {
     this.createError = '';
   }
 
+  /* =========================================================
+     CREATE CONTRACT
+     ========================================================= */
+
   createContract(): void {
     this.createError = '';
 
-    if (!this.contractForm.title.trim()) {
+    const formValue = this.contractForm.value;
+
+    const title = String(formValue.title || '').trim();
+    const contractNumber =
+      String(formValue.contract_number || '').trim();
+    const category =
+      String(formValue.category || '').trim();
+
+    if (!title) {
       this.createError = 'Contract title is required.';
       return;
     }
 
-    if (!this.contractForm.contract_number.trim()) {
+    if (!contractNumber) {
       this.createError = 'Contract number is required.';
       return;
     }
 
-    if (!this.contractForm.category.trim()) {
+    if (!category) {
       this.createError = 'Contract category is required.';
       return;
     }
 
+    const startDate = formValue.start_date;
+    const endDate = formValue.end_date;
+
     if (
-      this.contractForm.start_date &&
-      this.contractForm.end_date &&
-      this.contractForm.start_date > this.contractForm.end_date
+      startDate &&
+      endDate &&
+      startDate > endDate
     ) {
       this.createError =
         'End date must be after the start date.';
@@ -253,26 +335,39 @@ export class ContractsComponent implements OnInit {
 
     this.creating = true;
 
+    const rawValue = formValue.contract_value;
+
     const contract: ContractCreate = {
-      ...this.contractForm,
-      title: this.contractForm.title.trim(),
-      contract_number:
-        this.contractForm.contract_number.trim(),
-      category: this.contractForm.category.trim(),
+      title: title,
+
+      contract_number: contractNumber,
+
+      category: category,
+
       description:
-        this.contractForm.description?.trim() || null,
+        String(formValue.description || '').trim() || null,
+
       counterparty_name:
-        this.contractForm.counterparty_name?.trim() || null,
+        String(formValue.counterparty_name || '').trim() || null,
+
+      start_date: startDate || null,
+
+      end_date: endDate || null,
+
       contract_value:
-        this.contractForm.contract_value === null ||
-        this.contractForm.contract_value === undefined ||
-        Number.isNaN(this.contractForm.contract_value)
+        rawValue === null ||
+        rawValue === undefined ||
+        rawValue === '' ||
+        Number.isNaN(Number(rawValue))
           ? null
-          : Number(this.contractForm.contract_value),
+          : Number(rawValue),
+
       currency:
-        this.contractForm.currency?.trim().toUpperCase() || null,
-      assigned_to:
-        this.contractForm.assigned_to || null
+        String(formValue.currency || 'INR')
+          .trim()
+          .toUpperCase() || null,
+
+      assigned_to: null
     };
 
     this.contractService.createContract(contract).subscribe({
@@ -285,7 +380,10 @@ export class ContractsComponent implements OnInit {
       },
 
       error: (error) => {
-        console.error('Create contract error:', error);
+        console.error(
+          'Create contract error:',
+          error
+        );
 
         this.creating = false;
 
@@ -311,6 +409,10 @@ export class ContractsComponent implements OnInit {
     });
   }
 
+  /* =========================================================
+     SUBMIT FOR REVIEW
+     ========================================================= */
+
   submitForReview(contract: Contract): void {
     this.contractService
       .submitForReview(contract.id)
@@ -331,6 +433,10 @@ export class ContractsComponent implements OnInit {
         }
       });
   }
+
+  /* =========================================================
+     APPROVE CONTRACT
+     ========================================================= */
 
   approveContract(contract: Contract): void {
     this.contractService
@@ -353,6 +459,10 @@ export class ContractsComponent implements OnInit {
       });
   }
 
+  /* =========================================================
+     ACTIVATE CONTRACT
+     ========================================================= */
+
   activateContract(contract: Contract): void {
     this.contractService
       .activateContract(contract.id)
@@ -373,6 +483,10 @@ export class ContractsComponent implements OnInit {
         }
       });
   }
+
+  /* =========================================================
+     DELETE CONTRACT
+     ========================================================= */
 
   deleteContract(contract: Contract): void {
     const confirmed = window.confirm(
@@ -403,6 +517,10 @@ export class ContractsComponent implements OnInit {
       });
   }
 
+  /* =========================================================
+     FORMAT CONTRACT VALUE
+     ========================================================= */
+
   formatValue(contract: Contract): string {
     if (
       contract.contract_value === null ||
@@ -417,6 +535,10 @@ export class ContractsComponent implements OnInit {
 
     return `${currency}${contract.contract_value}`;
   }
+
+  /* =========================================================
+     STATUS CSS CLASS
+     ========================================================= */
 
   getStatusClass(status: string): string {
     return status

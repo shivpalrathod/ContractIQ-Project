@@ -1,1069 +1,1852 @@
-<div class="page">
+﻿<div class="obligations-page">
 
-  <!-- Page Header -->
+  <!-- =========================================================
+       PAGE HEADER
+       ========================================================= -->
 
   <div class="page-header">
-    <div>
-      <h1>Obligations</h1>
-      <p>Track and manage your contractual obligations</p>
+
+    <div class="page-heading">
+
+      <div class="page-heading-icon">
+        <mat-icon>assignment</mat-icon>
+      </div>
+
+      <div>
+        <h1>Obligations</h1>
+        <p>Track and manage your contractual obligations</p>
+      </div>
+
     </div>
 
-```
-@if (canCreate()) {
-  <button
-    mat-raised-button
-    color="primary"
-    type="button"
-    (click)="openCreateForm()"
-  >
-    <mat-icon>add</mat-icon>
-    <span>Create Obligation</span>
-  </button>
-}
-```
+    @if (canCreate()) {
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        class="create-button"
+        (click)="openCreateForm()">
+
+        <mat-icon>add</mat-icon>
+
+        <span>Create Obligation</span>
+
+      </button>
+
+    }
 
   </div>
 
-  <!-- Create Obligation Form -->
 
-@if (showCreateForm) { <mat-card class="form-card">
+  <!-- =========================================================
+       SUMMARY CARDS
+       ========================================================= -->
 
-```
-  <div class="form-header">
-    <div>
-      <h2>Create Obligation</h2>
-      <p>Add a new obligation and assign responsibility.</p>
-    </div>
+  <div class="obligation-summary">
 
-    <button
-      mat-icon-button
-      type="button"
-      matTooltip="Close"
-      aria-label="Close create obligation form"
-      (click)="closeCreateForm()"
-      [disabled]="creating"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
+    <mat-card class="summary-card total-card">
+
+      <mat-card-content>
+
+        <div class="summary-content">
+
+          <div class="summary-icon">
+            <mat-icon>assignment</mat-icon>
+          </div>
+
+          <div class="summary-info">
+            <span class="summary-label">
+              Total Obligations
+            </span>
+
+            <strong class="summary-value">
+              {{ filteredObligations.length }}
+            </strong>
+          </div>
+
+        </div>
+
+      </mat-card-content>
+
+    </mat-card>
+
+
+    <mat-card class="summary-card pending-card">
+
+      <mat-card-content>
+
+        <div class="summary-content">
+
+          <div class="summary-icon">
+            <mat-icon>schedule</mat-icon>
+          </div>
+
+          <div class="summary-info">
+            <span class="summary-label">
+              Pending
+            </span>
+
+            <strong class="summary-value">
+              {{ pendingCount }}
+            </strong>
+          </div>
+
+        </div>
+
+      </mat-card-content>
+
+    </mat-card>
+
+
+    <mat-card class="summary-card progress-card">
+
+      <mat-card-content>
+
+        <div class="summary-content">
+
+          <div class="summary-icon">
+            <mat-icon>autorenew</mat-icon>
+          </div>
+
+          <div class="summary-info">
+            <span class="summary-label">
+              In Progress
+            </span>
+
+            <strong class="summary-value">
+              {{ inProgressCount }}
+            </strong>
+          </div>
+
+        </div>
+
+      </mat-card-content>
+
+    </mat-card>
+
+
+    <mat-card class="summary-card overdue-card">
+
+      <mat-card-content>
+
+        <div class="summary-content">
+
+          <div class="summary-icon">
+            <mat-icon>warning</mat-icon>
+          </div>
+
+          <div class="summary-info">
+            <span class="summary-label">
+              Overdue
+            </span>
+
+            <strong class="summary-value">
+              {{ overdueCount }}
+            </strong>
+          </div>
+
+        </div>
+
+      </mat-card-content>
+
+    </mat-card>
+
   </div>
 
-  @if (createError) {
-    <div class="error-message">
-      <mat-icon>error</mat-icon>
-      <span>{{ createError }}</span>
-    </div>
+
+  <!-- =========================================================
+       CREATE OBLIGATION FORM
+       ========================================================= -->
+
+  @if (showCreateForm) {
+
+    <mat-card class="form-card">
+
+      <!-- Form Header -->
+
+      <div class="form-header">
+
+        <div class="form-heading">
+
+          <div class="form-icon">
+            <mat-icon>add_task</mat-icon>
+          </div>
+
+          <div>
+
+            <h2>Create New Obligation</h2>
+
+            <p>
+              Add a new obligation and assign responsibility.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <button
+          mat-icon-button
+          type="button"
+          class="close-button"
+          matTooltip="Close"
+          aria-label="Close create obligation form"
+          (click)="closeCreateForm()"
+          [disabled]="creating">
+
+          <mat-icon>close</mat-icon>
+
+        </button>
+
+      </div>
+
+
+      <!-- Error -->
+
+      @if (createError) {
+
+        <div class="error-message">
+
+          <mat-icon>error</mat-icon>
+
+          <span>
+            {{ createError }}
+          </span>
+
+        </div>
+
+      }
+
+
+      <!-- Form Body -->
+
+      <div class="form-body">
+
+        <!-- Basic Information -->
+
+        <div class="form-section">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              <mat-icon>info</mat-icon>
+            </div>
+
+            <div>
+
+              <h3>Basic Information</h3>
+
+              <p>
+                Enter the primary obligation details.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <!-- Contract ID -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>Contract ID</mat-label>
+
+              <input
+                matInput
+                [(ngModel)]="obligationForm.contract_id"
+                placeholder="Enter contract UUID"
+                [disabled]="creating">
+
+              <mat-hint>
+                UUID of the associated contract
+              </mat-hint>
+
+            </mat-form-field>
+
+
+            <!-- Assigned User -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>Assigned User ID</mat-label>
+
+              <input
+                matInput
+                [(ngModel)]="obligationForm.assigned_to"
+                placeholder="Enter user UUID"
+                [disabled]="creating">
+
+              <mat-hint>
+                UUID of the responsible user
+              </mat-hint>
+
+            </mat-form-field>
+
+
+            <!-- Title -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field full-width">
+
+              <mat-label>Obligation Title</mat-label>
+
+              <input
+                matInput
+                [(ngModel)]="obligationForm.title"
+                placeholder="Example: Submit monthly service report"
+                maxlength="255"
+                [disabled]="creating">
+
+              <mat-hint align="end">
+                {{ obligationForm.title.length }}/255
+              </mat-hint>
+
+            </mat-form-field>
+
+          </div>
+
+        </div>
+
+
+        <!-- Obligation Details -->
+
+        <div class="form-section">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              <mat-icon>event_note</mat-icon>
+            </div>
+
+            <div>
+
+              <h3>Obligation Details</h3>
+
+              <p>
+                Define the type, due date and priority.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+            <!-- Type -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>Obligation Type</mat-label>
+
+              <mat-select
+                [(ngModel)]="obligationForm.obligation_type"
+                [disabled]="creating">
+
+                <mat-option value="">
+                  Select type
+                </mat-option>
+
+                @for (type of obligationTypes; track type) {
+
+                  <mat-option [value]="type">
+                    {{ type }}
+                  </mat-option>
+
+                }
+
+              </mat-select>
+
+            </mat-form-field>
+
+
+            <!-- Due Date -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>Due Date</mat-label>
+
+              <input
+                matInput
+                type="date"
+                [(ngModel)]="obligationForm.due_date"
+                [disabled]="creating">
+
+            </mat-form-field>
+
+
+            <!-- Priority -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>Priority</mat-label>
+
+              <mat-select
+                [(ngModel)]="obligationForm.priority"
+                [disabled]="creating">
+
+                @for (priority of priorities; track priority) {
+
+                  <mat-option [value]="priority">
+                    {{ priority }}
+                  </mat-option>
+
+                }
+
+              </mat-select>
+
+            </mat-form-field>
+
+          </div>
+
+        </div>
+
+
+        <!-- Description -->
+
+        <div class="form-section">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              <mat-icon>description</mat-icon>
+            </div>
+
+            <div>
+
+              <h3>Description</h3>
+
+              <p>
+                Add additional information about this obligation.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <mat-form-field
+            appearance="outline"
+            class="form-field full-width">
+
+            <mat-label>Description</mat-label>
+
+            <textarea
+              matInput
+              rows="5"
+              [(ngModel)]="obligationForm.description"
+              placeholder="Describe the obligation..."
+              [disabled]="creating">
+            </textarea>
+
+          </mat-form-field>
+
+        </div>
+
+
+        <!-- Form Actions -->
+
+        <div class="form-actions">
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="cancel-button"
+            (click)="closeCreateForm()"
+            [disabled]="creating">
+
+            Cancel
+
+          </button>
+
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            class="submit-button"
+            (click)="createObligation()"
+            [disabled]="creating">
+
+            @if (creating) {
+
+              <mat-spinner diameter="20"></mat-spinner>
+
+              <span>Creating...</span>
+
+            } @else {`r`n`r`n              <span class="button-icon"><mat-icon>save</mat-icon></span>`r`n`r`n              <span>Create Obligation</span>
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </mat-card>
+
   }
 
-  <div class="form-grid">
 
-    <!-- Contract ID -->
-    <mat-form-field appearance="outline">
-      <mat-label>Contract ID</mat-label>
-
-      <input
-        matInput
-        [(ngModel)]="obligationForm.contract_id"
-        placeholder="Enter contract UUID"
-        [disabled]="creating"
-      />
-
-      <mat-hint>
-        UUID of the associated contract
-      </mat-hint>
-    </mat-form-field>
-
-    <!-- Assigned User -->
-    <mat-form-field appearance="outline">
-      <mat-label>Assigned User ID</mat-label>
-
-      <input
-        matInput
-        [(ngModel)]="obligationForm.assigned_to"
-        placeholder="Enter user UUID"
-        [disabled]="creating"
-      />
-
-      <mat-hint>
-        UUID of the responsible user
-      </mat-hint>
-    </mat-form-field>
-
-    <!-- Title -->
-    <mat-form-field
-      appearance="outline"
-      class="full-width"
-    >
-      <mat-label>Obligation Title</mat-label>
-
-      <input
-        matInput
-        [(ngModel)]="obligationForm.title"
-        placeholder="Example: Submit monthly service report"
-        maxlength="255"
-        [disabled]="creating"
-      />
-
-      <mat-hint align="end">
-        {{ obligationForm.title.length }}/255
-      </mat-hint>
-    </mat-form-field>
-
-    <!-- Obligation Type -->
-    <mat-form-field appearance="outline">
-      <mat-label>Obligation Type</mat-label>
-
-      <mat-select
-        [(ngModel)]="obligationForm.obligation_type"
-        [disabled]="creating"
-      >
-        <mat-option value="">
-          Select type
-        </mat-option>
-
-        @for (type of obligationTypes; track type) {
-          <mat-option [value]="type">
-            {{ type }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-
-    <!-- Due Date -->
-    <mat-form-field appearance="outline">
-      <mat-label>Due Date</mat-label>
-
-      <input
-        matInput
-        type="date"
-        [(ngModel)]="obligationForm.due_date"
-        [disabled]="creating"
-      />
-    </mat-form-field>
-
-    <!-- Priority -->
-    <mat-form-field appearance="outline">
-      <mat-label>Priority</mat-label>
-
-      <mat-select
-        [(ngModel)]="obligationForm.priority"
-        [disabled]="creating"
-      >
-        @for (priority of priorities; track priority) {
-          <mat-option [value]="priority">
-            {{ priority }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-
-    <!-- Description -->
-    <mat-form-field
-      appearance="outline"
-      class="full-width"
-    >
-      <mat-label>Description</mat-label>
-
-      <textarea
-        matInput
-        rows="4"
-        [(ngModel)]="obligationForm.description"
-        placeholder="Describe the obligation..."
-        [disabled]="creating"
-      ></textarea>
-    </mat-form-field>
-
-  </div>
-
-  <!-- Form Actions -->
-  <div class="form-actions">
-
-    <button
-      mat-stroked-button
-      type="button"
-      (click)="closeCreateForm()"
-      [disabled]="creating"
-    >
-      Cancel
-    </button>
-
-    <button
-      mat-raised-button
-      color="primary"
-      type="button"
-      (click)="createObligation()"
-      [disabled]="creating"
-    >
-      @if (creating) {
-        <mat-spinner diameter="20"></mat-spinner>
-        <span>Creating...</span>
-      } @else {
-        <ng-container>
-          <mat-icon>save</mat-icon>
-          <span>Create Obligation</span>
-        </ng-container>
-      }
-    </button>
-
-  </div>
-
-</mat-card>
-```
-
-}
-
-  <!-- Search and Filters -->
+  <!-- =========================================================
+       SEARCH AND FILTERS
+       ========================================================= -->
 
   <mat-card class="search-card">
 
-```
-<div class="search-row">
+    <mat-card-content>
 
-  <mat-form-field
-    appearance="outline"
-    class="search-field"
-  >
-    <mat-label>Search obligations</mat-label>
+      <div class="search-header">
 
-    <input
-      matInput
-      [(ngModel)]="searchTerm"
-      (input)="onSearch()"
-      placeholder="Search by title, contract, type, priority, status..."
-    />
+        <div>
 
-    @if (searchTerm) {
-      <button
-        mat-icon-button
-        matSuffix
-        type="button"
-        matTooltip="Clear search"
-        aria-label="Clear search"
-        (click)="clearFilters()"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    } @else {
-      <mat-icon matSuffix>search</mat-icon>
-    }
+          <h2>Find Obligations</h2>
 
-  </mat-form-field>
+          <p>
+            Search and filter your contractual obligations
+          </p>
 
-  <!-- Status Filter -->
-  <mat-form-field
-    appearance="outline"
-    class="filter-field"
-  >
-    <mat-label>Status</mat-label>
+        </div>
 
-    <mat-select
-      [(ngModel)]="statusFilter"
-      (selectionChange)="applyFilters()"
-    >
-      <mat-option value="">All statuses</mat-option>
+      </div>
 
-      @for (status of statuses; track status) {
-        <mat-option [value]="status">
-          {{ status }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
 
-  <!-- Priority Filter -->
-  <mat-form-field
-    appearance="outline"
-    class="filter-field"
-  >
-    <mat-label>Priority</mat-label>
+      <div class="search-row">
 
-    <mat-select
-      [(ngModel)]="priorityFilter"
-      (selectionChange)="applyFilters()"
-    >
-      <mat-option value="">All priorities</mat-option>
+        <!-- Search -->
 
-      @for (priority of priorities; track priority) {
-        <mat-option [value]="priority">
-          {{ priority }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          class="search-field">
 
-  <!-- Type Filter -->
-  <mat-form-field
-    appearance="outline"
-    class="filter-field type-filter"
-  >
-    <mat-label>Obligation Type</mat-label>
+          <mat-label>
+            Search obligations
+          </mat-label>
 
-    <mat-select
-      [(ngModel)]="typeFilter"
-      (selectionChange)="applyFilters()"
-    >
-      <mat-option value="">All types</mat-option>
+          <input
+            matInput
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            placeholder="Search by title, contract, type, priority, status...">
 
-      @for (type of obligationTypes; track type) {
-        <mat-option [value]="type">
-          {{ type }}
-        </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+          @if (searchTerm) {
 
-  <button
-    mat-stroked-button
-    type="button"
-    (click)="clearFilters()"
-  >
-    <mat-icon>filter_alt_off</mat-icon>
-    <span>Clear</span>
-  </button>
-
-  <button
-    mat-stroked-button
-    type="button"
-    (click)="loadObligations()"
-    [disabled]="loading"
-  >
-    <mat-icon>refresh</mat-icon>
-    <span>Refresh</span>
-  </button>
-
-</div>
-```
-
-  </mat-card>
-
-  <!-- Page Error -->
-
-@if (error) { <div class="error-message page-error"> <mat-icon>error</mat-icon>
-
-```
-  <div>
-    <strong>Unable to complete request</strong>
-    <p>{{ error }}</p>
-  </div>
-</div>
-```
-
-}
-
-  <!-- Loading -->
-
-@if (loading) { <mat-card class="state-card"> <mat-spinner diameter="42"></mat-spinner>
-
-```
-  <h3>Loading obligations...</h3>
-
-  <p>
-    Please wait while we retrieve your obligations.
-  </p>
-</mat-card>
-```
-
-}
-
-  <!-- Empty -->
-
-@if (!loading && !error && filteredObligations.length === 0) { <mat-card class="state-card">
-
-```
-  <mat-icon class="state-icon">
-    assignment
-  </mat-icon>
-
-  @if (
-    searchTerm ||
-    statusFilter ||
-    priorityFilter ||
-    typeFilter
-  ) {
-
-    <h3>No obligations found</h3>
-
-    <p>
-      No obligations match the current search or filters.
-    </p>
-
-    <button
-      mat-stroked-button
-      type="button"
-      (click)="clearFilters()"
-    >
-      <mat-icon>filter_alt_off</mat-icon>
-      <span>Clear Filters</span>
-    </button>
-
-  } @else {
-
-    <h3>No obligations yet</h3>
-
-    <p>
-      There are currently no obligations available.
-    </p>
-
-    @if (canCreate()) {
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        (click)="openCreateForm()"
-      >
-        <mat-icon>add</mat-icon>
-        <span>Create First Obligation</span>
-      </button>
-    }
-
-  }
-
-</mat-card>
-```
-
-}
-
-  <!-- Obligation List -->
-
-@if (
-!loading &&
-!error &&
-filteredObligations.length > 0
-) {
-
-```
-<mat-card class="table-card">
-
-  <div class="table-header">
-
-    <div>
-      <h2>Obligation List</h2>
-
-      <p>
-        {{ filteredObligations.length }}
-        obligation(s) displayed
-      </p>
-    </div>
-
-  </div>
-
-  <div class="table-container">
-
-    <table
-      mat-table
-      [dataSource]="filteredObligations"
-      class="obligations-table"
-    >
-
-      <!-- Title -->
-      <ng-container matColumnDef="title">
-
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-        >
-          Obligation
-        </th>
-
-        <td
-          mat-cell
-          *matCellDef="let obligation"
-        >
-
-          <div class="title-cell">
-
-            <strong>
-              {{ obligation.title }}
-            </strong>
-
-            @if (obligation.description) {
-              <span>
-                {{ obligation.description }}
-              </span>
-            }
-
-          </div>
-
-        </td>
-
-      </ng-container>
-
-      <!-- Type -->
-      <ng-container matColumnDef="obligation_type">
-
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-        >
-          Type
-        </th>
-
-        <td
-          mat-cell
-          *matCellDef="let obligation"
-        >
-          {{ obligation.obligation_type || 'N/A' }}
-        </td>
-
-      </ng-container>
-
-      <!-- Due Date -->
-      <ng-container matColumnDef="due_date">
-
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-        >
-          Due Date
-        </th>
-
-        <td
-          mat-cell
-          *matCellDef="let obligation"
-        >
-
-          <span
-            [class.overdue-date]="
-              obligation.status === 'Overdue'
-            "
-          >
-            {{ formatDate(obligation.due_date) }}
-          </span>
-
-        </td>
-
-      </ng-container>
-
-      <!-- Priority -->
-      <ng-container matColumnDef="priority">
-
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-        >
-          Priority
-        </th>
-
-        <td
-          mat-cell
-          *matCellDef="let obligation"
-        >
-
-          <span
-            class="priority-badge"
-            [class]="
-              'priority-' +
-              (obligation.priority || 'Medium').toLowerCase()
-            "
-          >
-            {{ obligation.priority || 'Medium' }}
-          </span>
-
-        </td>
-
-      </ng-container>
-
-      <!-- Status -->
-      <ng-container matColumnDef="status">
-
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-        >
-          Status
-        </th>
-
-        <td
-          mat-cell
-          *matCellDef="let obligation"
-        >
-
-          <span
-            class="status-badge"
-            [class]="
-              'status-' +
-              getStatusClass(obligation.status)
-            "
-          >
-            {{ obligation.status || 'Unknown' }}
-          </span>
-
-        </td>
-
-      </ng-container>
-
-      <!-- Actions -->
-      <ng-container matColumnDef="actions">
-
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-        >
-          Actions
-        </th>
-
-        <td
-          mat-cell
-          *matCellDef="let obligation"
-        >
-
-          <div class="actions">
-
-            <!-- View -->
             <button
               mat-icon-button
+              matSuffix
               type="button"
-              matTooltip="View obligation"
-              aria-label="View obligation"
-              (click)="viewObligation(obligation)"
-            >
-              <mat-icon>visibility</mat-icon>
+              matTooltip="Clear search"
+              aria-label="Clear search"
+              (click)="clearFilters()">
+
+              <mat-icon>close</mat-icon>
+
             </button>
 
-            <!-- Edit -->
-            @if (canUpdate()) {
-              <button
-                mat-icon-button
-                type="button"
-                matTooltip="Edit obligation"
-                aria-label="Edit obligation"
-                (click)="openEditForm(obligation)"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
+          } @else {
+
+            <mat-icon matSuffix>
+              search
+            </mat-icon>
+
+          }
+
+        </mat-form-field>
+
+
+        <!-- Status -->
+
+        <mat-form-field
+          appearance="outline"
+          class="filter-field">
+
+          <mat-label>Status</mat-label>
+
+          <mat-select
+            [(ngModel)]="statusFilter"
+            (selectionChange)="applyFilters()">
+
+            <mat-option value="">
+              All statuses
+            </mat-option>
+
+            @for (status of statuses; track status) {
+
+              <mat-option [value]="status">
+                {{ status }}
+              </mat-option>
+
             }
 
-            <!-- Start -->
-            @if (
-              canChangeStatus() &&
-              obligation.status === 'Pending'
-            ) {
-              <button
-                mat-icon-button
-                type="button"
-                matTooltip="Start obligation"
-                aria-label="Start obligation"
-                (click)="startObligation(obligation)"
-              >
-                <mat-icon>play_arrow</mat-icon>
-              </button>
+          </mat-select>
+
+        </mat-form-field>
+
+
+        <!-- Priority -->
+
+        <mat-form-field
+          appearance="outline"
+          class="filter-field">
+
+          <mat-label>Priority</mat-label>
+
+          <mat-select
+            [(ngModel)]="priorityFilter"
+            (selectionChange)="applyFilters()">
+
+            <mat-option value="">
+              All priorities
+            </mat-option>
+
+            @for (priority of priorities; track priority) {
+
+              <mat-option [value]="priority">
+                {{ priority }}
+              </mat-option>
+
             }
 
-            <!-- Complete -->
-            @if (
-              canChangeStatus() &&
-              obligation.status === 'In Progress'
-            ) {
-              <button
-                mat-icon-button
-                type="button"
-                matTooltip="Complete obligation"
-                aria-label="Complete obligation"
-                (click)="completeObligation(obligation)"
-              >
-                <mat-icon>check_circle</mat-icon>
-              </button>
+          </mat-select>
+
+        </mat-form-field>
+
+
+        <!-- Type -->
+
+        <mat-form-field
+          appearance="outline"
+          class="filter-field type-filter">
+
+          <mat-label>Obligation Type</mat-label>
+
+          <mat-select
+            [(ngModel)]="typeFilter"
+            (selectionChange)="applyFilters()">
+
+            <mat-option value="">
+              All types
+            </mat-option>
+
+            @for (type of obligationTypes; track type) {
+
+              <mat-option [value]="type">
+                {{ type }}
+              </mat-option>
+
             }
 
-            <!-- Delayed -->
-            @if (
-              canChangeStatus() &&
-              obligation.status !== 'Completed' &&
-              obligation.status !== 'Delayed' &&
-              obligation.status !== 'Overdue'
-            ) {
-              <button
-                mat-icon-button
-                type="button"
-                matTooltip="Mark as delayed"
-                aria-label="Mark as delayed"
-                (click)="markDelayed(obligation)"
-              >
-                <mat-icon>schedule</mat-icon>
-              </button>
-            }
+          </mat-select>
 
-            <!-- Overdue -->
-            @if (
-              canChangeStatus() &&
-              obligation.status !== 'Completed' &&
-              obligation.status !== 'Overdue'
-            ) {
-              <button
-                mat-icon-button
-                type="button"
-                matTooltip="Mark as overdue"
-                aria-label="Mark as overdue"
-                (click)="markOverdue(obligation)"
-              >
-                <mat-icon>warning</mat-icon>
-              </button>
-            }
+        </mat-form-field>
 
-            <!-- Delete -->
-            @if (canDelete()) {
-              <button
-                mat-icon-button
-                type="button"
-                matTooltip="Delete obligation"
-                aria-label="Delete obligation"
-                (click)="deleteObligation(obligation)"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
-            }
 
-          </div>
+        <!-- Clear -->
 
-        </td>
-
-      </ng-container>
-
-      <!-- Rows -->
-      <tr
-        mat-header-row
-        *matHeaderRowDef="displayedColumns"
-      ></tr>
-
-      <tr
-        mat-row
-        *matRowDef="
-          let row;
-          columns: displayedColumns
-        "
-      ></tr>
-
-    </table>
-
-  </div>
-
-</mat-card>
-```
-
-}
-
-  <!-- View Obligation Details -->
-
-@if (showDetails && selectedObligation) {
-
-```
-<div class="modal-backdrop">
-
-  <mat-card class="details-card">
-
-    <div class="form-header">
-
-      <div>
-        <h2>Obligation Details</h2>
-        <p>
-          Complete information about this obligation.
-        </p>
-      </div>
-
-      <button
-        mat-icon-button
-        type="button"
-        matTooltip="Close"
-        aria-label="Close obligation details"
-        (click)="closeDetails()"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-
-    </div>
-
-    <div class="details-grid">
-
-      <div class="detail-item">
-        <span class="detail-label">Title</span>
-        <strong>
-          {{ selectedObligation.title }}
-        </strong>
-      </div>
-
-      <div class="detail-item">
-        <span class="detail-label">Status</span>
-
-        <span
-          class="status-badge"
-          [class]="
-            'status-' +
-            getStatusClass(selectedObligation.status)
-          "
-        >
-          {{ selectedObligation.status || 'Unknown' }}
-        </span>
-      </div>
-
-      <div class="detail-item">
-        <span class="detail-label">Contract ID</span>
-        <span>
-          {{ selectedObligation.contract_id }}
-        </span>
-      </div>
-
-      <div class="detail-item">
-        <span class="detail-label">Assigned User</span>
-        <span>
-          {{ selectedObligation.assigned_to }}
-        </span>
-      </div>
-
-      <div class="detail-item">
-        <span class="detail-label">Obligation Type</span>
-        <span>
-          {{ selectedObligation.obligation_type || 'N/A' }}
-        </span>
-      </div>
-
-      <div class="detail-item">
-        <span class="detail-label">Priority</span>
-
-        <span
-          class="priority-badge"
-          [class]="
-            'priority-' +
-            (selectedObligation.priority || 'Medium').toLowerCase()
-          "
-        >
-          {{ selectedObligation.priority || 'Medium' }}
-        </span>
-      </div>
-
-      <div class="detail-item">
-        <span class="detail-label">Due Date</span>
-        <span>
-          {{ formatDate(selectedObligation.due_date) }}
-        </span>
-      </div>
-
-      <div class="detail-item">
-        <span class="detail-label">Completed At</span>
-        <span>
-          {{ formatDateTime(selectedObligation.completed_at) }}
-        </span>
-      </div>
-
-      <div class="detail-item full-width">
-        <span class="detail-label">Description</span>
-
-        <p>
-          {{ selectedObligation.description || 'N/A' }}
-        </p>
-      </div>
-
-      <div class="detail-item">
-        <span class="detail-label">Created At</span>
-        <span>
-          {{ formatDateTime(selectedObligation.created_at) }}
-        </span>
-      </div>
-
-      <div class="detail-item">
-        <span class="detail-label">Updated At</span>
-        <span>
-          {{ formatDateTime(selectedObligation.updated_at) }}
-        </span>
-      </div>
-
-    </div>
-
-    <div class="form-actions">
-
-      @if (canUpdate()) {
         <button
           mat-stroked-button
           type="button"
-          (click)="closeDetails(); openEditForm(selectedObligation)"
-        >
-          <mat-icon>edit</mat-icon>
-          <span>Edit</span>
+          class="filter-button"
+          (click)="clearFilters()">
+
+          <mat-icon>
+            filter_alt_off
+          </mat-icon>
+
+          <span>
+            Clear
+          </span>
+
         </button>
-      }
 
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        (click)="closeDetails()"
-      >
-        Close
-      </button>
 
-    </div>
+        <!-- Refresh -->
+
+        <button
+          mat-stroked-button
+          type="button"
+          class="refresh-button"
+          (click)="loadObligations()"
+          [disabled]="loading">
+
+          <mat-icon>
+            refresh
+          </mat-icon>
+
+          <span>
+            Refresh
+          </span>
+
+        </button>
+
+      </div>
+
+    </mat-card-content>
 
   </mat-card>
 
-</div>
-```
 
-}
+  <!-- =========================================================
+       PAGE ERROR
+       ========================================================= -->
 
-  <!-- Edit Obligation -->
+  @if (error) {
 
-@if (showEditForm && selectedObligation) {
+    <div class="error-message page-error">
 
-```
-<div class="modal-backdrop">
-
-  <mat-card class="details-card edit-card">
-
-    <div class="form-header">
+      <mat-icon>
+        error
+      </mat-icon>
 
       <div>
-        <h2>Edit Obligation</h2>
+
+        <strong>
+          Unable to complete request
+        </strong>
+
         <p>
-          Update the obligation information.
+          {{ error }}
         </p>
-      </div>
 
-      <button
-        mat-icon-button
-        type="button"
-        matTooltip="Close"
-        aria-label="Close edit obligation form"
-        (click)="closeEditForm()"
-        [disabled]="updating"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
+      </div>
 
     </div>
 
-    @if (editError) {
-      <div class="error-message">
-        <mat-icon>error</mat-icon>
-        <span>{{ editError }}</span>
-      </div>
-    }
+  }
 
-    <div class="form-grid">
 
-      <!-- Assigned User -->
-      <mat-form-field appearance="outline">
-        <mat-label>Assigned User ID</mat-label>
+  <!-- =========================================================
+       LOADING
+       ========================================================= -->
 
-        <input
-          matInput
-          [(ngModel)]="editForm.assigned_to"
-          [disabled]="updating"
-        />
-      </mat-form-field>
+  @if (loading) {
 
-      <!-- Title -->
-      <mat-form-field appearance="outline">
-        <mat-label>Obligation Title</mat-label>
+    <mat-card class="state-card">
 
-        <input
-          matInput
-          [(ngModel)]="editForm.title"
-          maxlength="255"
-          [disabled]="updating"
-        />
-      </mat-form-field>
+      <mat-card-content>
 
-      <!-- Type -->
-      <mat-form-field appearance="outline">
-        <mat-label>Obligation Type</mat-label>
+        <div class="state-icon loading-icon">
 
-        <mat-select
-          [(ngModel)]="editForm.obligation_type"
-          [disabled]="updating"
-        >
-          <mat-option value="">
-            None
-          </mat-option>
+          <mat-icon>
+            sync
+          </mat-icon>
 
-          @for (type of obligationTypes; track type) {
-            <mat-option [value]="type">
-              {{ type }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+        </div>
 
-      <!-- Due Date -->
-      <mat-form-field appearance="outline">
-        <mat-label>Due Date</mat-label>
+        <mat-spinner diameter="42"></mat-spinner>
 
-        <input
-          matInput
-          type="date"
-          [(ngModel)]="editForm.due_date"
-          [disabled]="updating"
-        />
-      </mat-form-field>
+        <h3>
+          Loading obligations...
+        </h3>
 
-      <!-- Priority -->
-      <mat-form-field appearance="outline">
-        <mat-label>Priority</mat-label>
+        <p>
+          Please wait while we retrieve your obligations.
+        </p>
 
-        <mat-select
-          [(ngModel)]="editForm.priority"
-          [disabled]="updating"
-        >
-          @for (priority of priorities; track priority) {
-            <mat-option [value]="priority">
-              {{ priority }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+      </mat-card-content>
 
-      <!-- Description -->
-      <mat-form-field
-        appearance="outline"
-        class="full-width"
-      >
-        <mat-label>Description</mat-label>
+    </mat-card>
 
-        <textarea
-          matInput
-          rows="5"
-          [(ngModel)]="editForm.description"
-          [disabled]="updating"
-        ></textarea>
-      </mat-form-field>
+  }
 
-    </div>
 
-    <div class="form-actions">
+  <!-- =========================================================
+       EMPTY
+       ========================================================= -->
 
-      <button
-        mat-stroked-button
-        type="button"
-        (click)="closeEditForm()"
-        [disabled]="updating"
-      >
-        Cancel
-      </button>
+  @if (!loading && !error && filteredObligations.length === 0) {
 
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        (click)="updateObligation()"
-        [disabled]="updating"
-      >
+    <mat-card class="state-card">
 
-        @if (updating) {
-          <mat-spinner diameter="20"></mat-spinner>
-          <span>Saving...</span>
+      <mat-card-content>
+
+        <div class="state-icon">
+
+          <mat-icon>
+            assignment
+          </mat-icon>
+
+        </div>
+
+
+        @if (
+          searchTerm ||
+          statusFilter ||
+          priorityFilter ||
+          typeFilter
+        ) {
+
+          <h3>
+            No obligations found
+          </h3>
+
+          <p>
+            No obligations match the current search or filters.
+          </p>
+
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="clearFilters()">
+
+            <mat-icon>
+              filter_alt_off
+            </mat-icon>
+
+            <span>
+              Clear Filters
+            </span>
+
+          </button>
+
         } @else {
-          <ng-container>
-            <mat-icon>save</mat-icon>
-            <span>Save Changes</span>
-          </ng-container>
+
+          <h3>
+            No obligations yet
+          </h3>
+
+          <p>
+            There are currently no obligations available.
+          </p>
+
+          @if (canCreate()) {
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="openCreateForm()">
+
+              <mat-icon>
+                add
+              </mat-icon>
+
+              <span>
+                Create First Obligation
+              </span>
+
+            </button>
+
+          }
+
         }
 
-      </button>
+      </mat-card-content>
+
+    </mat-card>
+
+  }
+
+
+  <!-- =========================================================
+       OBLIGATION LIST
+       ========================================================= -->
+
+  @if (
+    !loading &&
+    !error &&
+    filteredObligations.length > 0
+  ) {
+
+    <mat-card class="table-card">
+
+      <div class="table-header">
+
+        <div class="table-heading">
+
+          <div class="table-icon">
+            <mat-icon>list_alt</mat-icon>
+          </div>
+
+          <div>
+
+            <h2>
+              Obligation List
+            </h2>
+
+            <p>
+              {{ filteredObligations.length }}
+              obligation(s) displayed
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="table-container">
+
+        <table
+          mat-table
+          [dataSource]="filteredObligations"
+          class="obligations-table">
+
+
+          <!-- =====================================================
+               TITLE
+               ===================================================== -->
+
+          <ng-container matColumnDef="title">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef>
+
+              Obligation
+
+            </th>
+
+
+            <td
+              mat-cell
+              *matCellDef="let obligation">
+
+              <div class="title-cell">
+
+                <div class="title-icon">
+                  <mat-icon>assignment</mat-icon>
+                </div>
+
+                <div>
+
+                  <strong>
+                    {{ obligation.title }}
+                  </strong>
+
+                  @if (obligation.description) {
+
+                    <span>
+                      {{ obligation.description }}
+                    </span>
+
+                  }
+
+                </div>
+
+              </div>
+
+            </td>
+
+          </ng-container>
+
+
+          <!-- =====================================================
+               TYPE
+               ===================================================== -->
+
+          <ng-container matColumnDef="obligation_type">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef>
+
+              Type
+
+            </th>
+
+
+            <td
+              mat-cell
+              *matCellDef="let obligation">
+
+              <span class="type-text">
+                {{ obligation.obligation_type || 'N/A' }}
+              </span>
+
+            </td>
+
+          </ng-container>
+
+
+          <!-- =====================================================
+               DUE DATE
+               ===================================================== -->
+
+          <ng-container matColumnDef="due_date">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef>
+
+              Due Date
+
+            </th>
+
+
+            <td
+              mat-cell
+              *matCellDef="let obligation">
+
+              <div class="date-cell">
+
+                <mat-icon>
+                  calendar_today
+                </mat-icon>
+
+                <span
+                  [class.overdue-date]="
+                    obligation.status === 'Overdue'
+                  ">
+
+                  {{ formatDate(obligation.due_date) }}
+
+                </span>
+
+              </div>
+
+            </td>
+
+          </ng-container>
+
+
+          <!-- =====================================================
+               PRIORITY
+               ===================================================== -->
+
+          <ng-container matColumnDef="priority">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef>
+
+              Priority
+
+            </th>
+
+
+            <td
+              mat-cell
+              *matCellDef="let obligation">
+
+              <span
+                class="priority-badge"
+                [class]="
+                  'priority-' +
+                  (obligation.priority || 'Medium').toLowerCase()
+                ">
+
+                {{ obligation.priority || 'Medium' }}
+
+              </span>
+
+            </td>
+
+          </ng-container>
+
+
+          <!-- =====================================================
+               STATUS
+               ===================================================== -->
+
+          <ng-container matColumnDef="status">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef>
+
+              Status
+
+            </th>
+
+
+            <td
+              mat-cell
+              *matCellDef="let obligation">
+
+              <span
+                class="status-badge"
+                [class]="
+                  'status-' +
+                  getStatusClass(obligation.status)
+                ">
+
+                {{ obligation.status || 'Unknown' }}
+
+              </span>
+
+            </td>
+
+          </ng-container>
+
+
+          <!-- =====================================================
+               ACTIONS
+               ===================================================== -->
+
+          <ng-container matColumnDef="actions">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef>
+
+              Actions
+
+            </th>
+
+
+            <td
+              mat-cell
+              *matCellDef="let obligation">
+
+              <div class="actions">
+
+
+                <!-- View -->
+
+                <button
+                  mat-icon-button
+                  type="button"
+                  class="view-action"
+                  matTooltip="View obligation"
+                  aria-label="View obligation"
+                  (click)="viewObligation(obligation)">
+
+                  <mat-icon>
+                    visibility
+                  </mat-icon>
+
+                </button>
+
+
+                <!-- Edit -->
+
+                @if (canUpdate()) {
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    class="edit-action"
+                    matTooltip="Edit obligation"
+                    aria-label="Edit obligation"
+                    (click)="openEditForm(obligation)">
+
+                    <mat-icon>
+                      edit
+                    </mat-icon>
+
+                  </button>
+
+                }
+
+
+                <!-- Start -->
+
+                @if (
+                  canChangeStatus() &&
+                  obligation.status === 'Pending'
+                ) {
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    class="start-action"
+                    matTooltip="Start obligation"
+                    aria-label="Start obligation"
+                    (click)="startObligation(obligation)">
+
+                    <mat-icon>
+                      play_arrow
+                    </mat-icon>
+
+                  </button>
+
+                }
+
+
+                <!-- Complete -->
+
+                @if (
+                  canChangeStatus() &&
+                  obligation.status === 'In Progress'
+                ) {
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    class="complete-action"
+                    matTooltip="Complete obligation"
+                    aria-label="Complete obligation"
+                    (click)="completeObligation(obligation)">
+
+                    <mat-icon>
+                      check_circle
+                    </mat-icon>
+
+                  </button>
+
+                }
+
+
+                <!-- Delayed -->
+
+                @if (
+                  canChangeStatus() &&
+                  obligation.status !== 'Completed' &&
+                  obligation.status !== 'Delayed' &&
+                  obligation.status !== 'Overdue'
+                ) {
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    class="delay-action"
+                    matTooltip="Mark as delayed"
+                    aria-label="Mark as delayed"
+                    (click)="markDelayed(obligation)">
+
+                    <mat-icon>
+                      schedule
+                    </mat-icon>
+
+                  </button>
+
+                }
+
+
+                <!-- Overdue -->
+
+                @if (
+                  canChangeStatus() &&
+                  obligation.status !== 'Completed' &&
+                  obligation.status !== 'Overdue'
+                ) {
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    class="overdue-action"
+                    matTooltip="Mark as overdue"
+                    aria-label="Mark as overdue"
+                    (click)="markOverdue(obligation)">
+
+                    <mat-icon>
+                      warning
+                    </mat-icon>
+
+                  </button>
+
+                }
+
+
+                <!-- Delete -->
+
+                @if (canDelete()) {
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    class="delete-action"
+                    matTooltip="Delete obligation"
+                    aria-label="Delete obligation"
+                    (click)="deleteObligation(obligation)">
+
+                    <mat-icon>
+                      delete
+                    </mat-icon>
+
+                  </button>
+
+                }
+
+              </div>
+
+            </td>
+
+          </ng-container>
+
+
+          <!-- =====================================================
+               TABLE ROWS
+               ===================================================== -->
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns">
+          </tr>
+
+
+          <tr
+            mat-row
+            *matRowDef="
+              let row;
+              columns: displayedColumns
+            ">
+          </tr>
+
+
+        </table>
+
+      </div>
+
+    </mat-card>
+
+  }
+
+
+  <!-- =========================================================
+       VIEW OBLIGATION DETAILS
+       ========================================================= -->
+
+  @if (showDetails && selectedObligation) {
+
+    <div class="modal-backdrop">
+
+      <mat-card class="details-card">
+
+        <!-- Header -->
+
+        <div class="details-header">
+
+          <div class="details-heading">
+
+            <div class="details-icon">
+              <mat-icon>assignment</mat-icon>
+            </div>
+
+            <div>
+
+              <h2>
+                Obligation Details
+              </h2>
+
+              <p>
+                Complete information about this obligation.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <button
+            mat-icon-button
+            type="button"
+            class="close-button"
+            matTooltip="Close"
+            aria-label="Close obligation details"
+            (click)="closeDetails()">
+
+            <mat-icon>
+              close
+            </mat-icon>
+
+          </button>
+
+        </div>
+
+
+        <!-- Details -->
+
+        <div class="details-body">
+
+          <div class="details-grid">
+
+
+            <!-- Title -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Title
+              </span>
+
+              <strong>
+                {{ selectedObligation.title }}
+              </strong>
+
+            </div>
+
+
+            <!-- Status -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Status
+              </span>
+
+              <span
+                class="status-badge"
+                [class]="
+                  'status-' +
+                  getStatusClass(selectedObligation.status)
+                ">
+
+                {{ selectedObligation.status || 'Unknown' }}
+
+              </span>
+
+            </div>
+
+
+            <!-- Contract ID -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Contract ID
+              </span>
+
+              <span class="detail-value">
+                {{ selectedObligation.contract_id }}
+              </span>
+
+            </div>
+
+
+            <!-- Assigned User -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Assigned User
+              </span>
+
+              <span class="detail-value">
+                {{ selectedObligation.assigned_to }}
+              </span>
+
+            </div>
+
+
+            <!-- Type -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Obligation Type
+              </span>
+
+              <span class="detail-value">
+                {{ selectedObligation.obligation_type || 'N/A' }}
+              </span>
+
+            </div>
+
+
+            <!-- Priority -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Priority
+              </span>
+
+              <span
+                class="priority-badge"
+                [class]="
+                  'priority-' +
+                  (selectedObligation.priority || 'Medium').toLowerCase()
+                ">
+
+                {{ selectedObligation.priority || 'Medium' }}
+
+              </span>
+
+            </div>
+
+
+            <!-- Due Date -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Due Date
+              </span>
+
+              <span class="detail-value">
+                {{ formatDate(selectedObligation.due_date) }}
+              </span>
+
+            </div>
+
+
+            <!-- Completed -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Completed At
+              </span>
+
+              <span class="detail-value">
+                {{ formatDateTime(selectedObligation.completed_at) }}
+              </span>
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div class="detail-item full-width description-detail">
+
+              <span class="detail-label">
+                Description
+              </span>
+
+              <p>
+                {{ selectedObligation.description || 'N/A' }}
+              </p>
+
+            </div>
+
+
+            <!-- Created -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Created At
+              </span>
+
+              <span class="detail-value">
+                {{ formatDateTime(selectedObligation.created_at) }}
+              </span>
+
+            </div>
+
+
+            <!-- Updated -->
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+                Updated At
+              </span>
+
+              <span class="detail-value">
+                {{ formatDateTime(selectedObligation.updated_at) }}
+              </span>
+
+            </div>
+
+
+          </div>
+
+
+          <!-- Actions -->
+
+          <div class="form-actions">
+
+            @if (canUpdate()) {
+
+              <button
+                mat-stroked-button
+                type="button"
+                (click)="closeDetails(); openEditForm(selectedObligation)">
+
+                <mat-icon>
+                  edit
+                </mat-icon>
+
+                <span>
+                  Edit
+                </span>
+
+              </button>
+
+            }
+
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="closeDetails()">
+
+              Close
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </mat-card>
 
     </div>
 
-  </mat-card>
+  }
 
-</div>
-```
 
-}
+  <!-- =========================================================
+       EDIT OBLIGATION
+       ========================================================= -->
+
+  @if (showEditForm && selectedObligation) {
+
+    <div class="modal-backdrop">
+
+      <mat-card class="details-card edit-card">
+
+        <!-- Header -->
+
+        <div class="details-header">
+
+          <div class="details-heading">
+
+            <div class="details-icon edit-icon">
+              <mat-icon>edit</mat-icon>
+            </div>
+
+            <div>
+
+              <h2>
+                Edit Obligation
+              </h2>
+
+              <p>
+                Update the obligation information.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <button
+            mat-icon-button
+            type="button"
+            class="close-button"
+            matTooltip="Close"
+            aria-label="Close edit obligation form"
+            (click)="closeEditForm()"
+            [disabled]="updating">
+
+            <mat-icon>
+              close
+            </mat-icon>
+
+          </button>
+
+        </div>
+
+
+        <!-- Error -->
+
+        @if (editError) {
+
+          <div class="error-message">
+
+            <mat-icon>
+              error
+            </mat-icon>
+
+            <span>
+              {{ editError }}
+            </span>
+
+          </div>
+
+        }
+
+
+        <!-- Edit Body -->
+
+        <div class="details-body">
+
+          <div class="form-grid">
+
+
+            <!-- Assigned User -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>
+                Assigned User ID
+              </mat-label>
+
+              <input
+                matInput
+                [(ngModel)]="editForm.assigned_to"
+                [disabled]="updating">
+
+            </mat-form-field>
+
+
+            <!-- Title -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>
+                Obligation Title
+              </mat-label>
+
+              <input
+                matInput
+                [(ngModel)]="editForm.title"
+                maxlength="255"
+                [disabled]="updating">
+
+            </mat-form-field>
+
+
+            <!-- Type -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>
+                Obligation Type
+              </mat-label>
+
+              <mat-select
+                [(ngModel)]="editForm.obligation_type"
+                [disabled]="updating">
+
+                <mat-option value="">
+                  None
+                </mat-option>
+
+                @for (type of obligationTypes; track type) {
+
+                  <mat-option [value]="type">
+                    {{ type }}
+                  </mat-option>
+
+                }
+
+              </mat-select>
+
+            </mat-form-field>
+
+
+            <!-- Due Date -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>
+                Due Date
+              </mat-label>
+
+              <input
+                matInput
+                type="date"
+                [(ngModel)]="editForm.due_date"
+                [disabled]="updating">
+
+            </mat-form-field>
+
+
+            <!-- Priority -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field">
+
+              <mat-label>
+                Priority
+              </mat-label>
+
+              <mat-select
+                [(ngModel)]="editForm.priority"
+                [disabled]="updating">
+
+                @for (priority of priorities; track priority) {
+
+                  <mat-option [value]="priority">
+                    {{ priority }}
+                  </mat-option>
+
+                }
+
+              </mat-select>
+
+            </mat-form-field>
+
+
+            <!-- Description -->
+
+            <mat-form-field
+              appearance="outline"
+              class="form-field full-width">
+
+              <mat-label>
+                Description
+              </mat-label>
+
+              <textarea
+                matInput
+                rows="5"
+                [(ngModel)]="editForm.description"
+                [disabled]="updating">
+              </textarea>
+
+            </mat-form-field>
+
+
+          </div>
+
+
+          <!-- Edit Actions -->
+
+          <div class="form-actions">
+
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="closeEditForm()"
+              [disabled]="updating">
+
+              Cancel
+
+            </button>
+
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              class="submit-button"
+              (click)="updateObligation()"
+              [disabled]="updating">
+
+              @if (updating) {
+
+                <mat-spinner diameter="20"></mat-spinner>
+
+                <span>
+                  Saving...
+                </span>
+
+              } @else {`r`n`r`n                <span class="button-icon"><mat-icon>save</mat-icon></span>`r`n`r`n                <span>Save Changes</span>
+
+              }
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </mat-card>
+
+    </div>
+
+  }
 
 </div>

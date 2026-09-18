@@ -594,6 +594,24 @@ export class ObligationsComponent implements OnInit {
     return this.canUpdate();
   }
 
+  get pendingCount(): number {
+    return this.filteredObligations.filter(
+      obligation => obligation.status === 'Pending'
+    ).length;
+  }
+
+  get inProgressCount(): number {
+    return this.filteredObligations.filter(
+      obligation => obligation.status === 'In Progress'
+    ).length;
+  }
+
+  get overdueCount(): number {
+    return this.filteredObligations.filter(
+      obligation => obligation.status === 'Overdue'
+    ).length;
+  }
+
   getStatusClass(
     status: string | null
   ): string {

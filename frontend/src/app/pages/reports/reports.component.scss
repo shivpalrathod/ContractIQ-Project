@@ -10,160 +10,236 @@
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  color: #172033;
 }
 
-/* ============================================================
+/* =========================================================
    PAGE HEADER
-   ============================================================ */
+   ========================================================= */
 
 .page-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 32px;
+  gap: 24px;
+  margin-bottom: 30px;
+
+  > div:first-child {
+    min-width: 0;
+  }
+
+  h1 {
+    margin: 0 0 7px;
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #172033;
+  }
+
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  button {
+    flex-shrink: 0;
+    height: 42px;
+    padding: 0 17px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+
+    mat-icon {
+      width: 19px;
+      height: 19px;
+      font-size: 19px;
+      margin-right: 6px;
+    }
+  }
 }
 
-.page-header > div:first-child {
-  min-width: 0;
+/* =========================================================
+   REPORT CONTENT
+   ========================================================= */
+
+.report-content {
+  width: 100%;
 }
 
-.page-header h1 {
-  margin: 0;
-  font-size: 30px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.page-header p {
-  margin: 8px 0 0;
-  color: #64748b;
-  font-size: 15px;
-}
-
-.page-header button {
-  flex-shrink: 0;
-}
-
-/* ============================================================
+/* =========================================================
    REPORT SECTIONS
-   ============================================================ */
+   ========================================================= */
 
 .report-section {
-  margin-bottom: 40px;
+  margin-bottom: 38px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
-.report-section:last-child {
-  margin-bottom: 0;
-}
-
-/* Section title + icon */
 .section-title {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  margin-bottom: 18px;
+  gap: 13px;
+  margin-bottom: 17px;
+  padding-left: 2px;
+
+  > mat-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    margin-top: 2px;
+    font-size: 28px;
+    color: #4657c9;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 700;
+    color: #172033;
+  }
+
+  p {
+    margin: 5px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
+  }
 }
 
-.section-title > mat-icon {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  font-size: 28px;
-  margin-top: 2px;
-}
-
-.section-title h2 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.section-title p {
-  margin: 6px 0 0;
-  color: #64748b;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* ============================================================
-   SUMMARY CARDS
-   ============================================================ */
+/* =========================================================
+   SUMMARY GRID
+   ========================================================= */
 
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 17px;
 }
 
 .summary-card {
+  position: relative;
+  min-width: 0;
   min-height: 125px;
-  padding: 20px;
+  padding: 19px 20px;
   box-sizing: border-box;
-  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
   overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: #d7dce7;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  }
+
+  &:nth-child(1) .summary-icon {
+    background: #eef2ff;
+    color: #4657c9;
+  }
+
+  &:nth-child(2) .summary-icon {
+    background: #eaf8ef;
+    color: #15803d;
+  }
+
+  &:nth-child(3) .summary-icon {
+    background: #fff1f2;
+    color: #dc2626;
+  }
+
+  &:nth-child(4) .summary-icon {
+    background: #fff7df;
+    color: #d97706;
+  }
 }
 
 .summary-icon {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
   border-radius: 12px;
-  background: #eef2ff;
-}
 
-.summary-icon mat-icon {
-  width: 26px;
-  height: 26px;
-  font-size: 26px;
+  mat-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+  }
 }
 
 .summary-value {
   margin: 0;
   font-size: 28px;
-  font-weight: 700;
   line-height: 1.1;
+  font-weight: 700;
+  color: #172033;
 }
 
 .summary-label {
   margin-top: 6px;
-  color: #64748b;
-  font-size: 13px;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 500;
 }
 
-/* ============================================================
+/* =========================================================
    TABLE CARDS
-   ============================================================ */
+   ========================================================= */
 
 .table-card {
   display: block;
-  margin-top: 18px;
-  border-radius: 14px;
+  margin-top: 17px;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.045);
   overflow: hidden;
 }
 
 .card-header {
-  padding: 20px 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 19px 20px 16px;
+  border-bottom: 1px solid #eef0f4;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.3;
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  p {
+    margin: 5px 0 0;
+    color: #7a8494;
+    font-size: 12px;
+    line-height: 1.5;
+  }
 }
 
-.card-header h3 {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 650;
-  line-height: 1.3;
-}
-
-.card-header p {
-  margin: 6px 0 0;
-  color: #64748b;
-  font-size: 14px;
-  line-height: 1.5;
-}
+/* =========================================================
+   TABLE
+   ========================================================= */
 
 .table-wrapper {
   width: 100%;
@@ -173,29 +249,59 @@
 table {
   width: 100%;
   min-width: 500px;
+  background: #ffffff;
+}
+
+.mat-mdc-header-row {
+  background: #f8fafc;
 }
 
 .mat-mdc-header-cell {
-  font-weight: 650;
-}
-
-.mat-mdc-cell,
-.mat-mdc-header-cell {
+  height: 48px;
   padding-left: 16px;
   padding-right: 16px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #667085;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.45px;
 }
 
-/* ============================================================
+.mat-mdc-cell {
+  padding: 14px 16px;
+  border-bottom-color: #eef0f4;
+  color: #374151;
+  font-size: 13px;
+}
+
+.mat-mdc-row {
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #f8faff;
+  }
+
+  &:last-child .mat-mdc-cell {
+    border-bottom: 0;
+  }
+}
+
+/* =========================================================
    STATUS BADGES
-   ============================================================ */
+   ========================================================= */
 
 .status-badge {
   display: inline-flex;
   align-items: center;
-  padding: 5px 10px;
+  justify-content: center;
+  min-height: 25px;
+  padding: 4px 9px;
+  box-sizing: border-box;
   border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
   text-transform: capitalize;
   white-space: nowrap;
 }
@@ -203,113 +309,185 @@ table {
 .status-badge.active,
 .status-badge.completed,
 .status-badge.compliant {
-  background: #dcfce7;
-  color: #166534;
+  background: #eaf8ef;
+  color: #15803d;
+  border: 1px solid #ccebd6;
 }
 
 .status-badge.pending,
 .status-badge.draft,
 .status-badge.in-progress {
-  background: #fef3c7;
-  color: #92400e;
+  background: #fff7df;
+  color: #a16207;
+  border: 1px solid #f5df9e;
 }
 
 .status-badge.expired,
 .status-badge.overdue,
 .status-badge.non-compliant,
 .status-badge.cancelled {
-  background: #fee2e2;
-  color: #991b1b;
+  background: #fff0f0;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
 }
 
 .status-badge.high-risk {
-  background: #ffedd5;
-  color: #9a3412;
+  background: #fff2e8;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
 }
 
 .status-badge.unknown {
-  background: #e2e8f0;
-  color: #475569;
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
 }
 
-/* ============================================================
-   EMPTY / ERROR / LOADING
-   ============================================================ */
+/* =========================================================
+   EMPTY STATES
+   ========================================================= */
 
 .empty-state {
-  min-height: 150px;
-  padding: 30px;
+  min-height: 145px;
+  padding: 30px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   text-align: center;
-  color: #64748b;
+  color: #7a8494;
+
+  mat-icon {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 10px;
+    font-size: 38px;
+    color: #a0a8b5;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+  }
 }
 
-.empty-state mat-icon {
-  width: 38px;
-  height: 38px;
-  margin-bottom: 10px;
-  font-size: 38px;
-}
+/* =========================================================
+   ERROR CARD
+   ========================================================= */
 
 .error-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   margin-bottom: 24px;
+  padding: 16px 18px;
+  border: 1px solid #fecaca;
   border-left: 4px solid #dc2626;
+  border-radius: 12px;
+  background: #fff7f7;
+  box-shadow: none;
+
+  > mat-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
+    color: #dc2626;
+  }
+
+  > button {
+    flex-shrink: 0;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #b91c1c;
+    border-color: #dc2626;
+  }
 }
 
 .error-content {
+  flex: 1;
+  min-width: 0;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 3px;
+
+  strong {
+    font-size: 13px;
+    color: #991b1b;
+  }
+
+  span {
+    color: #7f1d1d;
+    font-size: 12px;
+    line-height: 1.5;
+  }
 }
 
-.error-content mat-icon {
-  color: #dc2626;
-}
+/* =========================================================
+   LOADING
+   ========================================================= */
 
 .loading-container {
-  min-height: 300px;
+  min-height: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 13px;
+  }
 }
 
-/* ============================================================
+/* =========================================================
    COMPLIANCE OVERVIEW
-   ============================================================ */
+   ========================================================= */
 
 .compliance-status-card {
-  margin-top: 18px;
-  border-radius: 14px;
+  margin-top: 17px;
+  border: 1px solid #e5e7eb;
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.045);
+  overflow: hidden;
 }
 
 .compliance-status-content {
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  padding: 20px;
-}
+  padding: 19px 20px;
 
-.compliance-status-content > mat-icon {
-  flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-  font-size: 30px;
-}
+  > mat-icon {
+    flex-shrink: 0;
+    width: 31px;
+    height: 31px;
+    font-size: 31px;
+    margin-top: 1px;
+  }
 
-.compliance-status-content strong {
-  display: block;
-  margin-bottom: 6px;
-}
+  strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1f2937;
+  }
 
-.compliance-status-content p {
-  margin: 0;
-  color: #64748b;
-  line-height: 1.5;
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.55;
+  }
 }
 
 .compliant {
@@ -328,13 +506,14 @@ table {
   color: #64748b;
 }
 
-/* ============================================================
-   RENEWALS
-   ============================================================ */
+/* =========================================================
+   RENEWAL LISTS
+   ========================================================= */
 
 .renewal-list {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .renewal-item {
@@ -342,36 +521,98 @@ table {
   grid-template-columns: minmax(0, 1fr) minmax(160px, 220px) auto;
   align-items: center;
   gap: 20px;
-  padding: 18px 20px;
-  border-top: 1px solid #e5e7eb;
-}
+  padding: 16px 20px;
+  border-top: 1px solid #eef0f4;
+  transition: background 0.15s ease;
 
-.renewal-item:first-child {
-  border-top: 0;
-}
+  &:first-child {
+    border-top: 0;
+  }
 
-.renewal-item strong {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 13px;
-}
+  &:hover {
+    background: #f8faff;
+  }
 
-.renewal-item span:not(.status-badge) {
-  color: #64748b;
-  font-size: 14px;
+  strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #374151;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  span:not(.status-badge) {
+    color: #667085;
+    font-size: 13px;
+  }
+
+  .status-badge {
+    justify-self: end;
+  }
 }
 
 .renewal-date {
   white-space: nowrap;
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+/* =========================================================
+   SECTION COLOR ACCENTS
+   ========================================================= */
 
-@media (max-width: 1100px) {
+.report-section:nth-child(1) .section-title > mat-icon {
+  color: #4657c9;
+}
+
+.report-section:nth-child(2) .section-title > mat-icon {
+  color: #7c3aed;
+}
+
+.report-section:nth-child(3) .section-title > mat-icon {
+  color: #15803d;
+}
+
+.report-section:nth-child(4) .section-title > mat-icon {
+  color: #d97706;
+}
+
+/* =========================================================
+   MATERIAL CARD CLEANUP
+   ========================================================= */
+
+mat-card {
+  --mdc-elevated-card-container-color: #ffffff;
+  --mdc-outlined-card-container-color: #ffffff;
+}
+
+/* =========================================================
+   RESPONSIVE - LAPTOP / TABLET
+   ========================================================= */
+
+@media (max-width: 1150px) {
   .summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .renewal-item {
+    grid-template-columns: minmax(0, 1fr) minmax(140px, 200px) auto;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 850px) {
+  :host {
+    padding: 22px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+
+    button {
+      align-self: flex-start;
+    }
   }
 
   .renewal-item {
@@ -380,46 +621,77 @@ table {
 
   .renewal-item .status-badge {
     justify-self: start;
+    grid-column: 1 / -1;
   }
 }
 
-@media (max-width: 700px) {
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
   :host {
     padding: 16px;
   }
 
   .page-header {
-    align-items: flex-start;
-    flex-direction: column;
     margin-bottom: 24px;
-  }
 
-  .page-header h1 {
-    font-size: 25px;
+    h1 {
+      font-size: 27px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+
+    button {
+      width: 100%;
+    }
   }
 
   .summary-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 11px;
   }
 
   .summary-card {
-    min-height: 110px;
-    padding: 16px;
+    min-height: 105px;
+    padding: 17px;
+  }
+
+  .summary-icon {
+    width: 43px;
+    height: 43px;
+
+    mat-icon {
+      width: 22px;
+      height: 22px;
+      font-size: 22px;
+    }
+  }
+
+  .summary-value {
+    font-size: 26px;
   }
 
   .section-title {
     gap: 10px;
-  }
+    margin-bottom: 14px;
 
-  .section-title > mat-icon {
-    width: 24px;
-    height: 24px;
-    font-size: 24px;
-  }
+    > mat-icon {
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+    }
 
-  .section-title h2 {
-    font-size: 20px;
+    h2 {
+      font-size: 19px;
+    }
+
+    p {
+      font-size: 12px;
+    }
   }
 
   .report-section {
@@ -428,10 +700,52 @@ table {
 
   .card-header {
     padding: 16px;
+
+    h3 {
+      font-size: 15px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .mat-mdc-header-cell {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .mat-mdc-cell {
+    padding: 12px;
   }
 
   .renewal-item {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 11px;
+    padding: 15px 16px;
+
+    .status-badge {
+      grid-column: auto;
+      justify-self: start;
+    }
+  }
+
+  .compliance-status-content {
+    padding: 17px;
+
+    > mat-icon {
+      width: 27px;
+      height: 27px;
+      font-size: 27px;
+    }
+  }
+
+  .error-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    > button {
+      margin-left: 36px;
+    }
   }
 }
