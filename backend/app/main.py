@@ -26,6 +26,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:4200",
         "http://127.0.0.1:4200",
+          "https://contractiq-frontend-vjqw.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -55,3 +56,4 @@ def root():
     return {
         "message": "ContractIQ Backend is running successfully."
     }
+
